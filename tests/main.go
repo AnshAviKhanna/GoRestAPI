@@ -24,10 +24,11 @@ func main() {
 	baseURL := os.Getenv("API_BASE_URL")
 	orgID := os.Getenv("ORG_ID")
 
-
-	GetUser(apiToken, baseURL, orgID)
-
 	AddUser(apiToken, baseURL, orgID)
+	GetUser(apiToken, baseURL, orgID)
+	UpdateUser(apiToken, baseURL, orgID)
+	UserList(apiToken, baseURL, orgID)
+	DeleteUser(apiToken, baseURL, orgID)
 }
 
 // GetUser sends a request to the "identity.user.get" endpoint
@@ -38,9 +39,8 @@ func GetUser(apiToken, baseURL, orgID string) {
 	// Create request body
 	// Sprintf - for multiline formatted string
 	requestBody := fmt.Sprintf(`{
-		"loginName": "ansh",
-		"orgID": "%s",
-		"userID": "AAK"
+		"loginName": "testansh2",
+		"orgID": "%s"
 	}`, orgID)
 
 	// Send request using helper function
@@ -62,14 +62,80 @@ func AddUser(apiToken, baseURL, orgID string) {
 	requestBody := fmt.Sprintf(`{
 	"emailLoginInvitation": true,
 	"inviteToNetworkID": 0,
-	"loginName": "ansh4",
-	"name": "AAKhanna",
+	"loginName": "testansh2",
+	"name": "test",
 	"orgID": "%s",
 	"password": "12345677",
 	"passwordChangeRequired": true,
-	"pskPassphrase": "4euyjvq4yt",
+	"pskPassphrase": "4pkyjvq4yt",
 	"status": "enabled",
 	"userType": "local"
+	}`, orgID)
+
+	// Send request using helper function
+	resp, err := sendRequest("POST", fullURL, apiToken, requestBody)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+
+	printResponse(resp)
+}
+
+// DeleteUser sends a request to the "identity.user.delete" endpoint
+func DeleteUser(apiToken, baseURL, orgID string) {
+	endpoint := "identity.user.delete"
+	fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
+
+	// Create request body
+	requestBody := fmt.Sprintf(`{
+		"loginName": "testansh3",
+		"orgID": "%s"
+	}`, orgID)
+
+	// Send request using helper function
+	resp, err := sendRequest("POST", fullURL, apiToken, requestBody)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+
+	printResponse(resp)
+}
+
+// UserList sends a request to the "identity.user.list" endpoint
+func UserList(apiToken, baseURL, orgID string) {
+	endpoint := "identity.user.list"
+	fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
+
+	// Create request body
+	requestBody := fmt.Sprintf(`{
+		"externalUserGroupID": 0,
+		"limit": 0,
+		"localUserGroupID": 0,
+		"orgID": "%s",
+	}`, orgID)
+
+	// Send request using helper function
+	resp, err := sendRequest("POST", fullURL, apiToken, requestBody)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+
+	printResponse(resp)
+}
+
+// UpdateUser sends a request to the "identity.user.delete" endpoint
+func UpdateUser(apiToken, baseURL, orgID string) {
+	endpoint := "identity.user.update"
+	fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
+
+	// Create request body
+	requestBody := fmt.Sprintf(`{
+		"orgID": "%s",
+		"status": "disabled",
+  		"userID": "U01970bdc-f54f-7443-8544-c5887406b17a"
 	}`, orgID)
 
 	// Send request using helper function
