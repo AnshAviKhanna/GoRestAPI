@@ -1,28 +1,26 @@
-# Use the official Golang image to build the app
+# Stage 1: Build the Go binary using official Golang image
 FROM golang:1.20 as builder
 
 WORKDIR /app
 
-# Copy only go.mod (no go.sum needed)
-COPY go.mod ./
-RUN go mod tidy
-
-# Copy the rest of the source code
+# Copy all necessary files
 COPY . .
 
-# Build the Go binary
-RUN go build -o server
+# Build the Go binary for Linux explicitly
+RUN GOOS=linux GOARCH=amd64 go build -o server
 
-# Use a minimal base image to run the app
+# Stage 2: Use Alpine to run the binary
 FROM alpine:latest
 
 WORKDIR /root/
 
-# Copy the compiled binary from the builder
+# Install libc if needed (required for Go binaries in Alpine)
+RUN apk add --no-cache libc6-compat
+
+# Copy the binary from builder
 COPY --from=builder /app/server .
 
-# Expose port 8080
 EXPOSE 8080
 
-# Run the app
+# Run the binary
 CMD ["./server"]
