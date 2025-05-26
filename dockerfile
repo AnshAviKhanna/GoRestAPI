@@ -6,15 +6,15 @@ WORKDIR /app
 # Copy all necessary files
 COPY . .
 
-# Build the Go binary for Linux explicitly
+# Build the Go binary for Linux 
 RUN GOOS=linux GOARCH=amd64 go build -o server
 
-# Stage 2: Use Alpine to run the binary
+# Stage 2: Alpine to run the binary
 FROM alpine:latest
 
 WORKDIR /root/
 
-# Install libc if needed (required for Go binaries in Alpine)
+# Install libc (for Go binaries in Alpine)
 RUN apk add --no-cache libc6-compat
 
 # Copy the binary from builder
