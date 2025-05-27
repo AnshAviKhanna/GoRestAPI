@@ -24,17 +24,17 @@ func main() {
 	baseURL := os.Getenv("API_BASE_URL")
 	orgID := os.Getenv("ORG_ID")
 
-	AddUser(apiToken, baseURL, orgID)
-	GetUser(apiToken, baseURL, orgID)
-	UpdateUser(apiToken, baseURL, orgID)
-	UserList(apiToken, baseURL, orgID)
-	DeleteUser(apiToken, baseURL, orgID)
+	AddUser(apiToken, baseURL+"/identity.user.add", orgID)
+	GetUser(apiToken, baseURL+"/identity.user.get", orgID)
+	UpdateUser(apiToken, baseURL+"/identity.user.update", orgID)
+	UserList(apiToken, baseURL+"/identity.user.list", orgID)
+	DeleteUser(apiToken, baseURL+"/identity.user.delete", orgID)
 }
 
 // GetUser sends a request to the "identity.user.get" endpoint
-func GetUser(apiToken, baseURL, orgID string) {
-	endpoint := "identity.user.get"
-	fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
+func GetUser(apiToken, fullURL, orgID string) {
+	// endpoint := "identity.user.get"
+	// fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
 
 	// Create request body
 	// Sprintf - for multiline formatted string
@@ -54,9 +54,9 @@ func GetUser(apiToken, baseURL, orgID string) {
 }
 
 // AddUser sends a request to the "identity.user.add" endpoint
-func AddUser(apiToken, baseURL, orgID string) {
-	endpoint := "identity.user.add"
-	fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
+func AddUser(apiToken, fullURL, orgID string) {
+	// endpoint := "identity.user.add"
+	// fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
 
 	// Create request body
 	requestBody := fmt.Sprintf(`{
@@ -83,9 +83,9 @@ func AddUser(apiToken, baseURL, orgID string) {
 }
 
 // DeleteUser sends a request to the "identity.user.delete" endpoint
-func DeleteUser(apiToken, baseURL, orgID string) {
-	endpoint := "identity.user.delete"
-	fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
+func DeleteUser(apiToken, fullURL, orgID string) {
+	// endpoint := "identity.user.delete"
+	// fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
 
 	// Create request body
 	requestBody := fmt.Sprintf(`{
@@ -104,16 +104,16 @@ func DeleteUser(apiToken, baseURL, orgID string) {
 }
 
 // UserList sends a request to the "identity.user.list" endpoint
-func UserList(apiToken, baseURL, orgID string) {
-	endpoint := "identity.user.list"
-	fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
+func UserList(apiToken, fullURL, orgID string) {
+	// endpoint := "identity.user.list"
+	// fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
 
 	// Create request body
 	requestBody := fmt.Sprintf(`{
 		"externalUserGroupID": 0,
 		"limit": 0,
 		"localUserGroupID": 0,
-		"orgID": "%s",
+		"orgID": "%s"
 	}`, orgID)
 
 	// Send request using helper function
@@ -126,10 +126,10 @@ func UserList(apiToken, baseURL, orgID string) {
 	printResponse(resp)
 }
 
-// UpdateUser sends a request to the "identity.user.delete" endpoint
-func UpdateUser(apiToken, baseURL, orgID string) {
-	endpoint := "identity.user.update"
-	fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
+// UpdateUser sends a request to the "identity.user.update" endpoint
+func UpdateUser(apiToken, fullURL, orgID string) {
+	// endpoint := "identity.user.update"
+	// fullURL := strings.TrimRight(baseURL, "/") + "/" + endpoint
 
 	// Create request body
 	requestBody := fmt.Sprintf(`{
